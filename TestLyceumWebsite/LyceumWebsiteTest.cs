@@ -18,8 +18,8 @@ namespace TestLyceumWebsite
         private readonly By _textInput = By.XPath("//input[@name='text']");
         private readonly By _searchLink2 = By.XPath("//yass-span[text()='Руководство лицея - Лицей №1 г. ']");
         private readonly By _searchLink = By.XPath("//yass-span[text()='Руководство лицея - Лицей №1 г. Минска']");
-        private readonly By _leaderCards = By.ClassName("excerpt_content");
-        private readonly By _leaderName = By.ClassName("name");
+        private readonly By _memberCard = By.ClassName("excerpt_content");
+        private readonly By _memberName = By.ClassName("name");
         private readonly By _showInfo = By.ClassName("show-hide");
 
         public LyceumWebsiteTest()
@@ -57,10 +57,10 @@ namespace TestLyceumWebsite
             searchResult.Click();
             var windowHandle = driver.WindowHandles;
             driver.SwitchTo().Window(windowHandle.Last());
-            IList<IWebElement> adminstration = driver.FindElements(_leaderCards);
+            IList<IWebElement> adminstration = driver.FindElements(_memberCard);
             for (var index = 1; index < adminstration.Count; index++)
             {
-                var memberName = adminstration[index].FindElement(_leaderName);
+                var memberName = adminstration[index].FindElement(_memberName);
                 if (memberName.Text.Contains(lastName))
                 {
                     var info = adminstration[index].FindElement(_showInfo);
