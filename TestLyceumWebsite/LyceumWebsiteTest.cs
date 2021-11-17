@@ -74,7 +74,6 @@ namespace TestLyceumWebsite
         public void Dispose()
         {
             driver.Quit();
-            driver?.Dispose();
         }
     }
 }
