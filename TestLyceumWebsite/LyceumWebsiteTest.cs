@@ -1,7 +1,12 @@
 using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using Xunit;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+
 namespace TestLyceumWebsite
 {
     public class LyceumWebsiteTest : IDisposable
@@ -9,38 +14,36 @@ namespace TestLyceumWebsite
         private IWebDriver driver;
         private const string PathToDriver = "../../../../";
         private const string WebsiteUrl = @"http://lyceum1.minsk.edu.by/";
-        private readonly By _submitInput = By.XPath("//input[@value='Найти']");
+        private readonly By _submitInput = By.XPath("//input[@value='РќР°Р№С‚Рё']");
         private readonly By _textInput = By.XPath("//input[@name='text']");
-<<<<<<< HEAD
-        private readonly By _searchLink2 = By.XPath("//yass-span[text()='Руководство лицея - Лицей №1 г. ']");
-        private readonly By _searchLink = By.XPath("//yass-span[text()='Руководство лицея - Лицей №1 г. Минска']");
+        private readonly By _searchLink2 = By.XPath("//yass-span[text()='Р СѓРєРѕРІРѕРґСЃС‚РІРѕ Р»РёС†РµСЏ - Р›РёС†РµР№ в„–1 Рі. ']");
+        private readonly By _searchLink = By.XPath("//yass-span[text()='Р СѓРєРѕРІРѕРґСЃС‚РІРѕ Р»РёС†РµСЏ - Р›РёС†РµР№ в„–1 Рі. РњРёРЅСЃРєР°']");
         private readonly By _memberCard = By.ClassName("excerpt_content");
         private readonly By _memberName = By.ClassName("name");
         private readonly By _showInfo = By.ClassName("show-hide");
-=======
->>>>>>> af16464 (change test logic)
 
         public LyceumWebsiteTest()
         {
             driver = new ChromeDriver(PathToDriver);
             driver.Navigate().GoToUrl(WebsiteUrl);
             driver.Manage().Window.Maximize();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
         }
 
         [Theory]
-        [InlineData("Драчан")]
-        [InlineData("Гребень")]
+        [InlineData("Гребень")]//Not a member of Administration
+        [InlineData("Драчан")]//Not a member of Administration
+        [InlineData("Лазарь")]
+        [InlineData("Снежков")]
         [InlineData("Ананич")]
         [InlineData("Коржик")]
+        [InlineData("Шамшур")]
         [InlineData("Карловский")]
-        public void Search_MemberOfLyceum_ReturnNotNull(string lastName)
+        public void Search_MemberOfAdministration_OpenMemberDescription(string lastName)
         {
             IWebElement submit = driver.FindElement(_submitInput);
             IWebElement input = driver.FindElement(_textInput);
             input.SendKeys(lastName);
             submit.Click();
-<<<<<<< HEAD
             Thread.Sleep(1000);
             IWebElement searchResult;
             try
@@ -66,11 +69,6 @@ namespace TestLyceumWebsite
                 }
             }
             Thread.Sleep(3000);
-=======
-            var linkXPath = By.XPath($"//yass-div[@class='b-serp-item__content']//*[contains(text(),'{lastName}')]");
-            var links = driver.FindElements(linkXPath);
-            Assert.NotEmpty(links);
->>>>>>> af16464 (change test logic)
         }
 
         public void Dispose()
